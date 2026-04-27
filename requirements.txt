@@ -4,3 +4,9 @@ torch==2.11.0
 torchaudio==2.11.0
 torchcodec==0.11.1
 transformers>=4.57,<5.0
+numpy>=1.21.0
+soundfile>=0.12.0
+scipy>=1.8.0
+python-dotenv>=1.0.0
+openai-whisper>=20240930
+f5_tts==0.1.0
