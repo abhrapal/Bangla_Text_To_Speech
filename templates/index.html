@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bengali Text-to-Speech</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <img src="/templates/Logo.png" alt="Bengali TTS Logo">
+      </div>
+      <div class="header-text">
+        <h1>Bangla Text To Speech</h1>
+        <p class="subtitle">An application to generate Bangla speech from your voice</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <p class="flash {{ category }}">{{ message }}</p>
+        {% endfor %}
+      {% endwith %}
+
+      <section>
+        <h2>Generate Speech</h2>
+        <form id="synthesize-form" action="/synthesize" method="POST">
+          <div>
+            <label for="text">Bengali Text (Unicode)</label>
+            <textarea id="text" name="text" placeholder="এখানে বাংলা লিখুন..."></textarea>
+            <p class="hint">Enter the Bengali text you want to synthesize into speech.</p>
+          </div>
+
+          <div>
+            <label for="speaker">Voice Selection</label>
+            <select id="speaker" name="speaker">
+              <option value="female">👩 Default Female Voice</option>
+              <option value="male">👨 Default Male Voice</option>
+              {% if speakers %}
+                <optgroup label="Custom Speakers">
+                  {% for sp in speakers %}
+                    <option value="{{ sp }}">🎤 {{ sp }}</option>
+                  {% endfor %}
+                </optgroup>
+              {% endif %}
+            </select>
+            <p class="hint">Select a voice: default female/male, or a custom speaker sample.</p>
+          </div>
+
+          <button id="generate-btn" type="submit">🎤 Generate Speech</button>
+          <p id="generate-status" class="hint hidden" aria-live="polite">Generating speech... please wait.</p>
+        </form>
+      </section>
+
+      {% if generated_audio_url %}
+      <section class="audio-result">
+        <h2>Generated Audio</h2>
+        <audio controls preload="metadata">
+          <source src="{{ generated_audio_url }}" type="audio/wav">
+          Your browser does not support the audio element.
+        </audio>
+        <br>
+        <a href="{{ generated_audio_url }}" download>⬇️ Download Audio</a>
+      </section>
+      {% endif %}
+
+      <section>
+        <h2>Register a New Speaker</h2>
+        <ol>
+          <li>Open the <a href="/phoneme-script">📖 Phoneme Reading Script</a> in a new tab.</li>
+          <li>Ask the speaker to read all lines clearly in a quiet environment.</li>
+          <li>Record a WAV file (16-bit PCM, mono, 22050 Hz or higher).</li>
+          <li>Target duration: 30–90 seconds (minimum 6 seconds).</li>
+          <li>Upload the recording: <a href="/register-speaker">Register Speaker</a></li>
+        </ol>
+        <p class="hint">💡 Tip: Avoid background noise, music, and clipping for best results.</p>
+      </section>
+
+      <section>
+        <h2>Quick Links</h2>
+        <nav>
+          <a href="/phoneme-script">📖 View Phoneme Script</a>
+          <a href="/register-speaker">➕ Register Speaker</a>
+          <a href="/manage-speakers">⚙️ Manage Speakers</a>
+        </nav>
+      </section>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <p>Built by <a href="https://www.okolkataradio.com" target="_blank" rel="noopener noreferrer">O Kolkata Radio</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      const form = document.getElementById("synthesize-form");
+      const button = document.getElementById("generate-btn");
+      const status = document.getElementById("generate-status");
+      if (!form || !button || !status) return;
+
+      const resetUi = function () {
+        button.disabled = false;
+        button.textContent = "🎤 Generate Speech";
+        status.classList.add("hidden");
+        form.removeAttribute("aria-busy");
+      };
+
+      form.addEventListener("submit", function () {
+        button.disabled = true;
+        button.textContent = "⏳ Generating...";
+        status.classList.remove("hidden");
+        form.setAttribute("aria-busy", "true");
+      });
+
+      window.addEventListener("pageshow", resetUi);
+    })();
+  </script>
+</body>
+</html>
+
+  <script>
+    (function () {
+      const form = document.getElementById("synthesize-form");
+      const button = document.getElementById("generate-btn");
+      const status = document.getElementById("generate-status");
+      if (!form || !button || !status) return;
+
+      const resetUi = function () {
+        button.disabled = false;
+        button.textContent = "Generate Speech";
+        status.classList.add("hidden");
+        form.removeAttribute("aria-busy");
+      };
+
+      form.addEventListener("submit", function () {
+        button.disabled = true;
+        button.textContent = "Generating...";
+        status.classList.remove("hidden");
+        form.setAttribute("aria-busy", "true");
+      });
+
+      window.addEventListener("pageshow", resetUi);
+    })();
+  </script>
+</body>
+</html>

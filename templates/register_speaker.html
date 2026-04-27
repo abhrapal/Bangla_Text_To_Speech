@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Speaker - Bengali TTS</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <img src="/templates/Logo.png" alt="Bengali TTS Logo">
+      </div>
+      <div class="header-text">
+        <h1>Bangla Text To Speech</h1>
+        <p class="subtitle">An application to generate Bangla speech from your voice</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h2>➕ Register a Speaker Voice</h2>
+      <p class="hint">Upload a recording to enable voice-adapted speech synthesis for this speaker.</p>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <p class="flash {{ category }}">{{ message }}</p>
+        {% endfor %}
+      {% endwith %}
+
+      <section>
+        <h2>What Should The Speaker Read?</h2>
+        <p>
+          The speaker should read the complete
+          <a href="/phoneme-script">📖 Phoneme Reading Script</a>
+          from start to end in a natural speaking style to capture all Bengali phonetic variations.
+        </p>
+      </section>
+
+      <section>
+        <h2>Recording Requirements</h2>
+        <ul>
+          <li><strong>Format:</strong> WAV file (16-bit PCM, mono)</li>
+          <li><strong>Sample rate:</strong> 22050 Hz or 24000 Hz</li>
+          <li><strong>Duration:</strong> 30–90 seconds (minimum 6 seconds)</li>
+          <li><strong>Environment:</strong> Quiet room, no background noise, fans, or music</li>
+          <li><strong>Quality:</strong> Clear speech, steady volume, avoid clipping or distortion</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Upload Recording</h2>
+        <form action="/register-speaker" method="POST" enctype="multipart/form-data">
+          <div>
+            <label for="speaker_name">Speaker Name</label>
+            <input type="text" id="speaker_name" name="speaker_name" placeholder="e.g., Abhra, Priya" required>
+            <p class="hint">A unique identifier for this speaker (alphanumeric, no special characters).</p>
+          </div>
+
+          <div>
+            <label for="audio_file">Upload WAV Recording</label>
+            <input type="file" id="audio_file" name="audio_file" accept=".wav" required>
+            <p class="hint">Select the WAV file recorded by the speaker reading the phoneme script.</p>
+          </div>
+
+          <button type="submit">💾 Register Speaker</button>
+        </form>
+      </section>
+
+      <nav>
+        <a href="/">🏠 Back to Home</a>
+        <a href="/manage-speakers">⚙️ Manage Speakers</a>
+        <a href="/phoneme-script">📖 Phoneme Script</a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <p>Built by <a href="https://www.okolkataradio.com" target="_blank" rel="noopener noreferrer">O Kolkata Radio</a></p>
+  </footer>
+</body>
+</html>

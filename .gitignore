@@ -1,0 +1,50 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Flask instance folder
+instance/
+.webassets-cache
+
+# Generated audio files
+outputs/*.wav
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS files
+Thumbs.db
+.DS_Store
+*.log
+
+# TTS model cache (large files)
+.cache/
+~/.local/tts/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+
+# Build and distribution
+build/
+dist/
+*.egg-info/

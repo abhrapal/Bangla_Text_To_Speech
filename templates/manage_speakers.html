@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Speakers - Bengali TTS</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <img src="/templates/Logo.png" alt="Bengali TTS Logo">
+      </div>
+      <div class="header-text">
+        <h1>Bangla Text To Speech</h1>
+        <p class="subtitle">An application to generate Bangla speech from your voice</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h2>Manage Speakers</h2>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+          <p class="flash {{ category }}">{{ message }}</p>
+        {% endfor %}
+      {% endwith %}
+
+      <section>
+        <h2 style="margin-top: 2rem;">⚙️ Voice Model Cache</h2>
+        <p>If speaker voice adaptation fails or produces unexpected results, clear the cache to re-download the voice conversion model.</p>
+        <form action="/manage-speakers/repair-vc-cache" method="POST">
+          <button type="submit" class="btn-danger">🔄 Repair Voice Conversion Cache</button>
+        </form>
+        <p class="hint" style="margin-top: 1rem;"><strong>Cache path:</strong> {{ wavlm_path }}</p>
+        {% if wavlm_exists %}
+          <p class="hint"><strong>Current size:</strong> {{ wavlm_size_mb }} MB</p>
+        {% else %}
+          <p class="hint"><strong>Status:</strong> Not downloaded yet (will download on first use)</p>
+        {% endif %}
+      </section>
+
+      <section>
+        <h2>👥 Registered Speakers</h2>
+        {% if speakers %}
+          <div class="speaker-list">
+            {% for sp in speakers %}
+              <article class="speaker-card">
+                <h3>{{ sp.name }}</h3>
+                <p class="hint"><strong>Sample size:</strong> {{ sp.size_kb }} KB</p>
+
+                <form action="/manage-speakers/replace" method="POST" enctype="multipart/form-data" class="inline-form">
+                  <input type="hidden" name="speaker_name" value="{{ sp.name }}">
+                  <label for="audio_file_{{ sp.name }}">Replace Sample WAV</label>
+                  <input type="file" id="audio_file_{{ sp.name }}" name="audio_file" accept=".wav" required>
+                  <button type="submit">📁 Replace</button>
+                </form>
+
+                <form action="/manage-speakers/delete" method="POST" class="inline-form" onsubmit="return confirm('Delete speaker {{ sp.name }}? This cannot be undone.');">
+                  <input type="hidden" name="speaker_name" value="{{ sp.name }}">
+                  <button type="submit" class="btn-danger">🗑️ Delete</button>
+                </form>
+              </article>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>No speakers registered yet. <a href="/register-speaker">Register a new speaker</a> to get started.</p>
+        {% endif %}
+      </section>
+
+      <nav>
+        <a href="/">🏠 Back to Home</a>
+        <a href="/register-speaker">➕ Register New Speaker</a>
+        <a href="/phoneme-script">📖 Phoneme Script</a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <p>Built by <a href="https://www.okolkataradio.com" target="_blank" rel="noopener noreferrer">O Kolkata Radio</a></p>
+  </footer>
+</body>
+</html>

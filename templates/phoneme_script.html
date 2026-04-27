@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phoneme Script - Bengali TTS</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .script-list {
+      background: var(--bg-light);
+      padding: 1.5rem;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary);
+    }
+    .script-list li {
+      margin-bottom: 1rem;
+      line-height: 1.6;
+      font-size: 1.05rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <div class="logo">
+        <img src="/templates/Logo.png" alt="Bengali TTS Logo">
+      </div>
+      <div class="header-text">
+        <h1>Bangla Text To Speech</h1>
+        <p class="subtitle">An application to generate Bangla speech from your voice</p>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h2>📄 Bengali Phoneme Coverage Script</h2>
+      <p>Ask each speaker to read the following sentences clearly and naturally. This script is carefully designed to cover all primary Bengali phonemes, consonants, conjuncts, and diphthongs.</p>
+      
+      <section>
+        <div class="script-list">
+          <ol>
+            {% for sentence in sentences %}
+              <li>{{ sentence }}</li>
+            {% endfor %}
+          </ol>
+        </div>
+      </section>
+
+      <section>
+        <h2>Recording Tips</h2>
+        <ul>
+          <li>Use a quiet room with minimal background noise</li>
+          <li>Speak clearly and at a natural, steady pace</li>
+          <li>Avoid shouting or whispering</li>
+          <li>Keep consistent volume throughout</li>
+          <li>Save the recording as a WAV file</li>
+        </ul>
+      </section>
+
+      <nav>
+        <a href="/register-speaker">➕ Register Speaker</a>
+        <a href="/manage-speakers">⚙️ Manage Speakers</a>
+        <a href="/">🏠 Back to Home</a>
+      </nav>
+    </div>
+  </main>
+
+  <footer class="app-footer">
+    <p>Built by <a href="https://www.okolkataradio.com" target="_blank" rel="noopener noreferrer">O Kolkata Radio</a></p>
+  </footer>
+</body>
+</html>
